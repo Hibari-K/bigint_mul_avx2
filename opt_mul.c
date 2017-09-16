@@ -44,26 +44,27 @@ void multiply(unsigned int* a, unsigned int* b, unsigned int* t, unsigned int* u
 	// ready for multiply_outer
 	__asm__ volatile(
 	// make ymm12 = 03020100
-	"mov $2, %esi;"
-	"movd %esi, %xmm14;"
-	"inc %esi;"
-	"movd %esi, %xmm15;"
-	"movlhps %xmm15, %xmm14;"
-	"psrlq $1, %xmm15;"
-	"pslldq $8, %xmm15;"
-	"vinserti128 $1, %xmm14, %ymm15, %ymm12;"
+	"mov $2, %%esi;"
+	"movd %%esi, %%xmm14;"
+	"inc %%esi;"
+	"movd %%esi, %%xmm15;"
+	"movlhps %%xmm15, %%xmm14;"
+	"psrlq $1, %%xmm15;"
+	"pslldq $8, %%xmm15;"
+	"vinserti128 $1, %%xmm14, %%ymm15, %%ymm12;"
 
 	// make ymm13 = 04040404
     // and make ymm12 = 07060504 (ymm12 + ymm13)
     // and make ymm14 = 01010101
-	"mov $4, %esi;"
-	"movd %esi, %xmm14;"
-	"vpbroadcastq %xmm14, %ymm13;" // ymm13 = 04040404
-	"vpaddq %ymm13, %ymm12, %ymm12;" // ymm12 = 07060504
+	"mov $4, %%esi;"
+	"movd %%esi, %%xmm14;"
+	"vpbroadcastq %%xmm14, %%ymm13;" // ymm13 = 04040404
+	"vpaddq %%ymm13, %%ymm12, %%ymm12;" // ymm12 = 07060504
 	
-    "mov $1, %esi;"
-	"movd %esi, %xmm14;"
-	"vpbroadcastq %xmm14, %ymm14;" // ymm14 = 01010101
+    "mov $1, %%esi;"
+	"movd %%esi, %%xmm14;"
+	"vpbroadcastq %%xmm14, %%ymm14;" // ymm14 = 01010101
+	:::"%rsi"
 	);
 
 
@@ -242,7 +243,7 @@ long multiply_inner(unsigned int* a, unsigned int* t, unsigned int* u, unsigned 
 void calc_carry(unsigned int* t, unsigned int* u, unsigned int* v, unsigned int* w, int digitstimestwo){
 
 
-	/*
+/*
 	  in this routine,
 	  mm7 : 0x1fffffff
 	  mm6 : carry
