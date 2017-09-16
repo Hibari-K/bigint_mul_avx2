@@ -9,7 +9,7 @@ void combine_29bit(unsigned int* data, unsigned int* result);
 void split_29bit(unsigned int* data, unsigned int* result, int digits);
 void multiply(unsigned int* a, unsigned int* b, unsigned int* t, unsigned int* u, unsigned int* v, unsigned int* w, int digits, int digitstimestwo);
 void BigMultiply(unsigned int* A, unsigned int* B, unsigned int* T);
-
+void gmp_mul();
 
 int main(){
 
@@ -41,10 +41,10 @@ int main(){
 		data_b[j] = B[j] = 0x11111111;
     }
     
+    //for(j=0; j<N-1; j++) printf("%08x", A[j]);
     
-    
-    split_29bit(data_a, a, MDIGITS);
-    for(j=0; j<M+1; j++) printf("%d : %x\n", j, a[j]);
+    //split_29bit(data_a, a, MDIGITS);
+    //for(j=0; j<M+1; j++) printf("%d : %x\n", j, a[j]);
 
     struct timeval s, e;
     double total = 0.0;
@@ -69,14 +69,13 @@ int main(){
     }
     
     time = total / 30.0;
-    printf("\nOptimized : Average time = %lf [ms]\n", time*1000);
+    printf("\nOptimized\t: Average time = %lf [us]\n", time*1000*1000);
     total = 0.0;
     
 	for(j=0; j<2*(2*M+1); j++) t[j] = u[j] = v[j] = w[j]  = 0;
 
     // normal multiply 
     for(i=0; i<30; i++){
-
         for(j=0; j<(2*N+1); j++) T[j] = 0;
 
     	gettimeofday(&s, NULL);
@@ -85,9 +84,13 @@ int main(){
 
 		total += (e.tv_sec - s.tv_sec) + (e.tv_usec - s.tv_usec)*1.0E-6;
     }
+
     time = total / 30.0;
-    printf("\nNormal : Average time = %lf [ms]\n", time*1000);
+    printf("Normal\t\t: Average time = %lf [us]\n", time*1000*1000);
     
+	// use GMP
+	gmp_mul();
+
     for(j=0; j<(2*N+1); j++) T[j] = 0;
 
     BigMultiply(A, B, T);
@@ -101,7 +104,9 @@ int main(){
     }
     if(!flag) puts("-------- No Error --------");
 
-    
+	//for(i=2*N; i>=0; i--) printf("%08x", T[i]);
+	//puts("");
+
     free(a);
     free(b);
     free(t);
