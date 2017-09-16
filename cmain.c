@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
+#include<sys/time.h>
 
 #include "ymm_mul.h"
 
@@ -44,59 +45,48 @@ int main(){
     
     split_29bit(data_a, a, MDIGITS);
     for(j=0; j<M+1; j++) printf("%d : %x\n", j, a[j]);
-    //split_29bit(data_b, b, MDIGITS);
-    //for(j=0; j<M+1; j++) printf("%d : %x\n", j, b[j]);
 
-    clock_t s, e;
+    struct timeval s, e;
     double total = 0.0;
     double time = 0.0;
     
     // optimized multiply
-    
     for(i=0; i<30; i++){
 	
 	    for(j=0; j<2*(2*M+1); j++) t[j] = u[j] = v[j] = w[j]  = 0;
 
-    	s = clock();
+    	gettimeofday(&s, NULL);
 	    split_29bit(data_a, a, MDIGITS);
     	split_29bit(data_b, b, MDIGITS);
 
 	    multiply(a, b, t, u, v, w, DIGITS, DIGITSTIMESTWO);
 
     	combine_29bit(t, result_t);
-	    e = clock();
-        //printf("%lf\n", (double)(e-s)/CLOCKS_PER_SEC);
-	    total += (double)(e-s);
+	    gettimeofday(&e, NULL);
+	    
+		total += (e.tv_sec - s.tv_sec) + (e.tv_usec - s.tv_usec)*1.0E-6;
 
     }
     
     time = total / 30.0;
-    printf("\nOptimized : Average time = %lf [ms]\n", (time/CLOCKS_PER_SEC)*1000);
+    printf("\nOptimized : Average time = %lf [ms]\n", time*1000);
     total = 0.0;
     
 	for(j=0; j<2*(2*M+1); j++) t[j] = u[j] = v[j] = w[j]  = 0;
 
-    split_29bit(data_a, a, MDIGITS);
-    split_29bit(data_b, b, MDIGITS);
-
-    multiply(a, b, t, u, v, w, DIGITS, DIGITSTIMESTWO);
-    
-    combine_29bit(t, result_t);
-    
     // normal multiply 
     for(i=0; i<30; i++){
 
         for(j=0; j<(2*N+1); j++) T[j] = 0;
 
-    	s = clock();
+    	gettimeofday(&s, NULL);
 	    BigMultiply(A, B, T);
-    	e = clock();
-	    //printf("%lf\n", (double)(e-s)/CLOCKS_PER_SEC);
-	    total += (double)(e-s);
+    	gettimeofday(&e, NULL);
 
+		total += (e.tv_sec - s.tv_sec) + (e.tv_usec - s.tv_usec)*1.0E-6;
     }
     time = total / 30.0;
-    printf("\nNormal : Average time = %lf [ms]\n", (time/CLOCKS_PER_SEC)*1000);
+    printf("\nNormal : Average time = %lf [ms]\n", time*1000);
     
     for(j=0; j<(2*N+1); j++) T[j] = 0;
 
@@ -104,19 +94,13 @@ int main(){
     // Error check
     int flag = 0;
     for(i=2*N; i>=0; i--){
-	if(result_t[i] != T[i]){
-	    printf("%d\n%x %x\n", i, result_t[i], T[i]);
-	    flag = 1;
-	}
+		if(result_t[i] != T[i]){
+	    	printf("%d\n%x %x\n", i, result_t[i], T[i]);
+			flag = 1;
+		}
     }
     if(!flag) puts("-------- No Error --------");
 
-    //printf("digit = %d\ndigittimestwo = %d\n", DIGITS, DIGITSTIMESTWO);
-/*
-    //for(i=0; i<2*N+2; i++) printf("%d : %08x\n", i, result_t[i]);
-    for(i=2*N; i>=0; i--)  printf("%08x ", result_t[i]); puts("");
-    for(i=2*N; i>=0; i--)  printf("%08x ", T[i]); puts("");
-*/  
     
     free(a);
     free(b);
