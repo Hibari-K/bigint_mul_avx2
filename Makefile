@@ -1,6 +1,6 @@
 CC		= gcc
 CFLAGS	= -g -Wall
-OBJS	= opt_mul.o
+OBJS	= split_29bit.c combine_29bit.o opt_mul.o BigMultiply.o cmain.o
 PROGRAM	= mul
 
 all:	$(PROGRAM)
