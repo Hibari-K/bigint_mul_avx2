@@ -41,15 +41,14 @@ int main(){
 		data_b[j] = B[j] = 0x11111111;
     }
     
-    //for(j=0; j<N-1; j++) printf("%08x", A[j]);
-    
-    //split_29bit(data_a, a, MDIGITS);
-    //for(j=0; j<M+1; j++) printf("%d : %x\n", j, a[j]);
 
     struct timeval s, e;
     double total = 0.0;
     double time = 0.0;
-    
+	//FILE *file = fopen("measure.csv", "w");
+	//fprintf(file, "Optimized,Normal\n");
+	//printf("Optimized,Normal,GMP\n");
+
     // optimized multiply
     for(i=0; i<30; i++){
 	
@@ -68,8 +67,10 @@ int main(){
 
     }
     
-    time = total / 30.0;
-    printf("\nOptimized\t: Average time = %lf [us]\n", time*1000*1000);
+    time = (total / 30.0) * 1000 * 1000;
+    printf("%lf,", time);
+    //printf("\nOptimized\t: Average time = %lf [us]\n", time);
+	//fprintf(file, "%lf,", time);
     total = 0.0;
     
 	for(j=0; j<2*(2*M+1); j++) t[j] = u[j] = v[j] = w[j]  = 0;
@@ -85,9 +86,12 @@ int main(){
 		total += (e.tv_sec - s.tv_sec) + (e.tv_usec - s.tv_usec)*1.0E-6;
     }
 
-    time = total / 30.0;
-    printf("Normal\t\t: Average time = %lf [us]\n", time*1000*1000);
+    time = (total / 30.0) * 1000 * 1000;
+    printf("%lf,", time);
+    //printf("Normal\t\t: Average time = %lf [us]\n", time);
+	//fprintf(file, "%lf\n", time);
     
+
 	// use GMP
 	gmp_mul();
 
@@ -102,11 +106,10 @@ int main(){
 			flag = 1;
 		}
     }
-    if(!flag) puts("-------- No Error --------");
+    //if(!flag) puts("-------- No Error --------");
 
-	//for(i=2*N; i>=0; i--) printf("%08x", T[i]);
-	//puts("");
 
+	//fclose(file);
     free(a);
     free(b);
     free(t);
