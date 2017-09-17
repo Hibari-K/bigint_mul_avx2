@@ -11,7 +11,7 @@ void multiply(unsigned int* a, unsigned int* b, unsigned int* t, unsigned int* u
 void BigMultiply(unsigned int* A, unsigned int* B, unsigned int* T);
 void gmp_mul();
 
-int main(){
+int main(int argc, char** argv){
 
     unsigned int* data_a = calloc((N+4), sizeof(int));
     unsigned int* data_b = calloc((N+4), sizeof(int));
@@ -41,7 +41,6 @@ int main(){
 		data_b[j] = B[j] = 0x11111111;
     }
     
-
     struct timeval s, e;
     double total = 0.0;
     double time = 0.0;
@@ -93,7 +92,7 @@ int main(){
     
 
 	// use GMP
-	gmp_mul();
+	gmp_mul(argv[1]);
 
     for(j=0; j<(2*N+1); j++) T[j] = 0;
 

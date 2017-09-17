@@ -7,36 +7,24 @@
 
 #define BASE 16
 
-void gmp_mul(){
+void gmp_mul(char* argv){
 	mpz_t a, b, res;
 	mpz_init(a);
 	mpz_init(b);
 	mpz_init2(res, 4096);
 
-	int* str_b = malloc(N*sizeof(int));
-
-	if(!str_b){
-		puts("malloc error.");
-		return;
-	}
-
 	int i;
-	for(i=0; i<N-1; i++){
-		str_b[i] = 0x11111111;
-	}
-
+	
 	struct timeval s, e;
 	double total = 0.0;
 	double time = 0.0;
 	
-	for(i=0; i<30; i++){
-	mpz_set_str(a,
-	"111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
-	BASE);
+	
+	mpz_set_str(a,argv,BASE);
 
 	mpz_set(b, a);
-	
 
+	for(i=0; i<30; i++){
 
 		gettimeofday(&s, NULL);
 		mpz_mul(res, a, b);
@@ -59,6 +47,6 @@ void gmp_mul(){
 	mpz_clear(b);
 	mpz_clear(res);
 
-	free(str_b);
+	//free(str_b);
 
 }
