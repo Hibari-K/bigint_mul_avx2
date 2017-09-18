@@ -3,7 +3,7 @@
 N=14
 loop=$1
 st=15	#115
-en=114	#214
+en=`expr $loop + 14`	#214
 
 ### initialize ###
 
