@@ -262,7 +262,7 @@ void calc_carry(unsigned int* t, unsigned int* u, unsigned int* v, unsigned int*
 		"movq %%mm0, %%mm6;"
 		"pand %%mm7, %%mm0;"
 		"movd %%mm0, (%0);"
-		"psrlq $29, %%mm6;"
+		"psrlq $28, %%mm6;"
 		
 		"mov $1, %%rbx;"
 		//[1]
@@ -273,7 +273,7 @@ void calc_carry(unsigned int* t, unsigned int* u, unsigned int* v, unsigned int*
 		"movq %%mm0, %%mm6;"
 		"pand %%mm7, %%mm6;"
 		"movd %%mm6, (%0, %%rbx, 4);"
-		"psrlq $29, %%mm0;"
+		"psrlq $28, %%mm0;"
 	
 		"inc %%ebx;"
 		//[2]
@@ -286,7 +286,7 @@ void calc_carry(unsigned int* t, unsigned int* u, unsigned int* v, unsigned int*
 		"movq %%mm6, %%mm0;"
 		"pand %%mm7, %%mm0;"
 		"movd %%mm0, (%0, %%rbx, 4);"
-		"psrlq $29, %%mm6;"
+		"psrlq $28, %%mm6;"
 
 		::"r"(t), "r"(u), "r"(v)
 		:"%rax", "%rbx"
@@ -323,7 +323,7 @@ void cloop(unsigned int* t, unsigned int* u, unsigned int* v, unsigned int* w, i
 			"movq %%mm0, %%mm6;"
 			"pand %%mm7, %%mm6;"
 			"movd %%mm6, (%0, %4, 4);"
-			"psrlq $29, %%mm0;"
+			"psrlq $28, %%mm0;"
 
 
 			"movq 8(%0, %4, 8), %%mm6;"
@@ -337,7 +337,7 @@ void cloop(unsigned int* t, unsigned int* u, unsigned int* v, unsigned int* w, i
 			"movq %%mm6, %%mm0;"
 			"pand %%mm7, %%mm0;"
 			"movd %%mm0, 4(%0, %4, 4);"
-			"psrlq $29, %%mm6;"
+			"psrlq $28, %%mm6;"
 
 			::"r"(t), "r"(u), "r"(v), "r"(w), "r"(i)
 		);

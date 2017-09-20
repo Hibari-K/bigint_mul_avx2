@@ -1,4 +1,4 @@
-#define BITSIZE 128 * 56
+#define BITSIZE 128 * 1
 #define N BITSIZE/32 //dataの配列数
 //#define M BITSIZE/29 //resultの配列数を決める指標
 #define M BITSIZE/28

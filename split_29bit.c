@@ -5,15 +5,11 @@
 void split_init();
 void split_main(unsigned int* data, unsigned int* result, int digits);
 
-
 void split_29bit(unsigned int* data, unsigned int* result, int digits){
 
-	// initialize
 	split_init();
 
-
-	split_main(data, result, digits);
-    
+	split_main(data, result, digits); 
 }
 
 
@@ -93,7 +89,6 @@ void split_main(unsigned int* data, unsigned int* result, int digits){
 		rsi += 2;
 
 		if(rsi > digits) break;
-
 
 		__asm__ volatile(
 			"movdqu (%2, %3), %%xmm0;"

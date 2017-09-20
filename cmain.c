@@ -7,11 +7,18 @@
 
 void combine_29bit(unsigned int* data, unsigned int* result);
 void split_29bit(unsigned int* data, unsigned int* result, int digits);
+void combine_28bit(unsigned int* data, unsigned int* result, int digits);
+void split_28bit(unsigned int* data, unsigned int* result, int digits);
 void multiply(unsigned int* a, unsigned int* b, unsigned int* t, unsigned int* u, unsigned int* v, unsigned int* w, int digits, int digitstimestwo);
 void BigMultiply(unsigned int* A, unsigned int* B, unsigned int* T);
 void gmp_mul();
 
 int main(int argc, char** argv){
+
+	if(argc != 2){
+		printf("Usage : %s num\n", argv[0]);
+		exit(0);
+	}
 
     unsigned int* data_a = calloc((N+4), sizeof(int));
     unsigned int* data_b = calloc((N+4), sizeof(int));
@@ -51,12 +58,12 @@ int main(int argc, char** argv){
 	    for(j=0; j<2*(2*M+1); j++) t[j] = u[j] = v[j] = w[j]  = 0;
 
     	gettimeofday(&s, NULL);
-	    split_29bit(data_a, a, MDIGITS);
-    	split_29bit(data_b, b, MDIGITS);
+	    split_28bit(data_a, a, SPLITDIGITS);
+    	split_28bit(data_b, b, SPLITDIGITS);
 
 	    multiply(a, b, t, u, v, w, DIGITS, DIGITSTIMESTWO);
 
-    	combine_29bit(t, result_t);
+    	combine_28bit(t, result_t, COMDIGITS);
 	    gettimeofday(&e, NULL);
 	    
 		total += (e.tv_sec - s.tv_sec) + (e.tv_usec - s.tv_usec)*1.0E-6;
@@ -65,7 +72,6 @@ int main(int argc, char** argv){
     
     time = (total / 30.0) * 1000 * 1000;
     printf("%lf,", time);
-    //printf("\nOptimized\t: Average time = %lf [us]\n", time);
     total = 0.0;
     
 	for(j=0; j<2*(2*M+1); j++) t[j] = u[j] = v[j] = w[j]  = 0;
@@ -83,8 +89,6 @@ int main(int argc, char** argv){
 
     time = (total / 30.0) * 1000 * 1000;
     printf("%lf,", time);
-    //printf("Normal\t\t: Average time = %lf [us]\n", time);
-    
 
 	// use GMP
 	gmp_mul(argv[1]);
@@ -101,7 +105,6 @@ int main(int argc, char** argv){
 		}
     }
     //if(!flag) puts("-------- No Error --------");
-
 
     free(a);
     free(b);
