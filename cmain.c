@@ -44,9 +44,6 @@ int main(int argc, char** argv){
     struct timeval s, e;
     double total = 0.0;
     double time = 0.0;
-	//FILE *file = fopen("measure.csv", "w");
-	//fprintf(file, "Optimized,Normal\n");
-	//printf("Optimized,Normal,GMP\n");
 
     // optimized multiply
     for(i=0; i<30; i++){
@@ -69,7 +66,6 @@ int main(int argc, char** argv){
     time = (total / 30.0) * 1000 * 1000;
     printf("%lf,", time);
     //printf("\nOptimized\t: Average time = %lf [us]\n", time);
-	//fprintf(file, "%lf,", time);
     total = 0.0;
     
 	for(j=0; j<2*(2*M+1); j++) t[j] = u[j] = v[j] = w[j]  = 0;
@@ -88,7 +84,6 @@ int main(int argc, char** argv){
     time = (total / 30.0) * 1000 * 1000;
     printf("%lf,", time);
     //printf("Normal\t\t: Average time = %lf [us]\n", time);
-	//fprintf(file, "%lf\n", time);
     
 
 	// use GMP
@@ -108,7 +103,6 @@ int main(int argc, char** argv){
     //if(!flag) puts("-------- No Error --------");
 
 
-	//fclose(file);
     free(a);
     free(b);
     free(t);
