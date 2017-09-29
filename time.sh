@@ -1,7 +1,7 @@
 #!/bin/sh
 
 i=40
-N=56
+N=55
 
 loop=$1
 st=`expr $N - $i + 2`	#115
